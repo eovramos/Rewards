@@ -1,0 +1,24 @@
+<Window x:Class="Rewards.EditCustomerDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Edit Customer" Height="250" Width="320"
+        ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+        Background="#F5F5F0">
+    <StackPanel Margin="20">
+        <TextBlock Text="Customer Name *" FontWeight="SemiBold" Margin="0,0,0,4"/>
+        <TextBox x:Name="NameTextBox" Padding="5,4" FontSize="13" Margin="0,0,0,12"/>
+
+        <TextBlock Text="Phone (optional)" FontWeight="SemiBold" Margin="0,0,0,4"/>
+        <TextBox x:Name="PhoneTextBox" Padding="5,4" FontSize="13" Margin="0,0,0,18"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="OkButton" Content="Save Changes" Width="110"
+                    Padding="0,6" Click="OkButton_Click"
+                    Background="#1E88E5" Foreground="White" FontWeight="SemiBold"
+                    BorderThickness="0"/>
+            <Button Content="Cancel" Width="70" Margin="8,0,0,0"
+                    Padding="0,6" IsCancel="True"
+                    Background="#E0E0E0" BorderThickness="0"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

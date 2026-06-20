@@ -1,0 +1,161 @@
+<Window x:Class="Rewards.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Egg Rewards Tracker" Height="620" Width="920"
+        MinHeight="520" MinWidth="780"
+        Background="#F5F5F0">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260" MinWidth="200"/>
+            <ColumnDefinition Width="4"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- LEFT PANEL: Customer List -->
+        <Border Grid.Column="0" Background="#FFFEF8" BorderBrush="#DDD" BorderThickness="0,0,1,0">
+            <DockPanel Margin="10">
+                <TextBlock DockPanel.Dock="Top" Text="Customers"
+                           FontWeight="Bold" FontSize="15" Margin="0,4,0,8"
+                           Foreground="#444"/>
+
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
+                    <Button x:Name="AddCustomerButton" Content="+ Add"
+                            Width="62" Click="AddCustomerButton_Click"
+                            Style="{StaticResource GreenButtonStyle}"/>
+                    <Button x:Name="EditCustomerButton" Content="✏ Edit"
+                            Width="62" Margin="5,0,0,0" Click="EditCustomerButton_Click"
+                            Style="{StaticResource BlueButtonStyle}" IsEnabled="False"/>
+                    <Button x:Name="RemoveCustomerButton" Content="✕ Remove"
+                            Width="75" Margin="5,0,0,0" Click="RemoveCustomerButton_Click"
+                            Style="{StaticResource RedButtonStyle}" IsEnabled="False"/>
+                </StackPanel>
+
+                <ListBox x:Name="CustomerListBox"
+                         SelectionChanged="CustomerListBox_SelectionChanged"
+                         BorderThickness="1" BorderBrush="#CCC"
+                         Background="White">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="4,3">
+                                <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="13"/>
+                                <TextBlock FontSize="11" Foreground="#888">
+                                    <Run Text="{Binding StampProgress, Mode=OneWay}"/><Run Text="/10  ·  "/>
+                                    <Run Text="{Binding RewardsAvailable, Mode=OneWay}"/><Run Text=" reward(s) ready"/>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Border>
+
+        <!-- SPLITTER -->
+        <GridSplitter Grid.Column="1" Width="4"
+                      HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                      Background="#DDD" ResizeBehavior="PreviousAndNext"/>
+
+        <!-- RIGHT PANEL: Customer Detail -->
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="DetailPanel" Margin="20,16" IsEnabled="False">
+
+                <!-- Customer header -->
+                <TextBlock x:Name="CustomerNameLabel" FontSize="22" FontWeight="Bold"
+                           Foreground="#333" Margin="0,0,0,2"/>
+                <TextBlock x:Name="CustomerPhoneLabel" FontSize="12" Foreground="#888"
+                           Margin="0,0,0,16"/>
+
+                <Separator Margin="0,0,0,14" Background="#DDD"/>
+
+                <!-- STAMP CARD SECTION -->
+                <TextBlock Text="Stamp Card" FontWeight="Bold" FontSize="14"
+                           Foreground="#555" Margin="0,0,0,8"/>
+
+                <Border Background="White" BorderBrush="#DDD" BorderThickness="1"
+                        CornerRadius="8" Padding="12,10">
+                    <StackPanel>
+                        <ItemsControl x:Name="StampCard">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                        <TextBlock x:Name="StampProgressLabel" FontSize="13"
+                                   FontWeight="SemiBold" Margin="0,8,0,2" Foreground="#444"/>
+                        <TextBlock x:Name="StampHintLabel" FontSize="11"
+                                   Foreground="#888" Margin="0,0,0,2"/>
+                    </StackPanel>
+                </Border>
+
+                <Separator Margin="0,14" Background="#DDD"/>
+
+                <!-- REWARDS STATS -->
+                <TextBlock Text="Rewards" FontWeight="Bold" FontSize="14"
+                           Foreground="#555" Margin="0,0,0,10"/>
+
+                <Grid Margin="0,0,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="26"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Total earned:" Grid.Row="0" Grid.Column="0"
+                               Margin="0,0,14,0" VerticalAlignment="Center" Foreground="#555"/>
+                    <TextBlock x:Name="RewardsEarnedLabel" Grid.Row="0" Grid.Column="1"
+                               FontWeight="Bold" VerticalAlignment="Center"/>
+
+                    <TextBlock Text="Claimed:" Grid.Row="1" Grid.Column="0"
+                               Margin="0,0,14,0" VerticalAlignment="Center" Foreground="#555"/>
+                    <TextBlock x:Name="RewardsClaimedLabel" Grid.Row="1" Grid.Column="1"
+                               FontWeight="Bold" VerticalAlignment="Center"/>
+
+                    <TextBlock Text="Available:" Grid.Row="2" Grid.Column="0"
+                               Margin="0,0,14,0" VerticalAlignment="Center" Foreground="#555"/>
+                    <TextBlock x:Name="RewardsAvailableLabel" Grid.Row="2" Grid.Column="1"
+                               FontWeight="Bold" VerticalAlignment="Center" Foreground="Green"/>
+                </Grid>
+
+                <Button x:Name="ClaimRewardButton" Content="Claim Free Dozen!"
+                        Click="ClaimRewardButton_Click" IsEnabled="False"
+                        HorizontalAlignment="Left" Padding="14,7"
+                        Style="{StaticResource GoldButtonStyle}"/>
+
+                <Separator Margin="0,14" Background="#DDD"/>
+
+                <!-- PURCHASE HISTORY -->
+                <DockPanel Margin="0,0,0,8">
+                    <TextBlock Text="Purchase History" FontWeight="Bold" FontSize="14"
+                               Foreground="#555" VerticalAlignment="Center"/>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="AddPurchaseButton" Content="+ Add Purchase"
+                                Click="AddPurchaseButton_Click"
+                                Style="{StaticResource GreenButtonStyle}" Padding="10,5"/>
+                        <Button x:Name="RemovePurchaseButton" Content="- Remove"
+                                Click="RemovePurchaseButton_Click" IsEnabled="False"
+                                Margin="6,0,0,0"
+                                Style="{StaticResource RedButtonStyle}" Padding="10,5"/>
+                    </StackPanel>
+                </DockPanel>
+
+                <ListBox x:Name="PurchaseListBox" MinHeight="120" MaxHeight="240"
+                         BorderThickness="1" BorderBrush="#CCC" Background="White"
+                         SelectionChanged="PurchaseListBox_SelectionChanged">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="6,4"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
